@@ -3,10 +3,9 @@ package contas
 import "banco/clientes"
 
 type ContaCorrente struct {
-	Titular       clientes.Titular
-	NumeroAgencia int
-	NumeroConta   int
-	saldo         float32
+	Titular                    clientes.Titular
+	NumeroAgencia, NumeroConta int
+	saldo                      float32
 }
 
 func (c *ContaCorrente) Sacar(valorDoSaque float32) string {
@@ -27,7 +26,7 @@ func (c *ContaCorrente) DepositarSaldo(valorDoDeposito float32) (string, float32
 	return "O valor do depósito menor que 0", c.saldo
 }
 
-func (c *ContaCorrente) Transferir(valorTransferencia float32, contaDestino *ContaCorrente) bool {
+func (c *ContaCorrente) Transferir(valorTransferencia float32, contaDestino *ContaPoupanca) bool {
 	if valorTransferencia < c.saldo && valorTransferencia > 0 {
 		c.saldo -= valorTransferencia
 		contaDestino.DepositarSaldo(valorTransferencia)
@@ -36,6 +35,6 @@ func (c *ContaCorrente) Transferir(valorTransferencia float32, contaDestino *Con
 	return false
 }
 
-func (c *ContaCorrente)  ObterSaldo() float32{
+func (c *ContaCorrente) ObterSaldo() float32 {
 	return c.saldo
 }
