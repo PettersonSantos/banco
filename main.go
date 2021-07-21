@@ -27,15 +27,33 @@ func (c *ContaCorrente) DepositarSaldo(valorDoDeposito float32) (string, float32
 	return "O valor do depósito menor que 0", c.saldo
 }
 
+func (c *ContaCorrente) Transferir(valorTransferencia float32, contaDestino *ContaCorrente) bool {
+	if valorTransferencia < c.saldo {
+		c.saldo -= valorTransferencia
+		contaDestino.DepositarSaldo(valorTransferencia)
+		return true
+	}
+	return false
+}
+
 func main() {
-	corrente := ContaCorrente{
+	correntePetterson := ContaCorrente{
 		titular:       "Petterson",
 		numeroAgencia: 556,
 		numeroConta:   56578,
 		saldo:         500,
 	}
 
-	fmt.Println(corrente.saldo)
-    status, valor := corrente.DepositarSaldo(-100)
-	fmt.Println(status, "Novo saldo ", valor)
+	correnteNew := ContaCorrente{
+		titular:       "João",
+		numeroAgencia: 556,
+		numeroConta:   56578,
+		saldo:         300,
+	}
+
+	status := correnteNew.Transferir(200, &correntePetterson)
+
+	fmt.Println(status)
+	fmt.Println(correntePetterson.saldo)
+	fmt.Println(correnteNew.saldo)
 }
